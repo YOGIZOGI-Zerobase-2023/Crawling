@@ -5,11 +5,16 @@ import json
 # Azure or AWS DB 연동
 def get_db():
     db = pymysql.connect(
-        host='yogizogi-test.cfy5fyxri87l.ap-northeast-2.rds.amazonaws.com',
+        # host='yogizogi-test.cfy5fyxri87l.ap-northeast-2.rds.amazonaws.com',
+        # port=3306,
+        # user='admin',
+        # passwd='yogizogi0000',
+        # db='yogizogi_test',
+        host='localhost',
         port=3306,
-        user='admin',
-        passwd='yogizogi0000',
-        db='yogizogi_test',
+        user='root',
+        passwd='12341234',
+        db='testYo',
         charset='utf8'
     )
     return db
@@ -22,7 +27,7 @@ def insert_json_data():
     db = get_db()
     mycursor = db.cursor()
         
-    json_data = open("./acc_crawling/sql/data/숙소사진.json").read()
+    json_data = open("./sql/data/숙소사진.json").read()
     json_obj = json.loads(json_data)
 
     try :

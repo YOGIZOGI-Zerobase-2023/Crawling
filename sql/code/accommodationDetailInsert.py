@@ -8,7 +8,7 @@ def get_db():
         host='yogizogi-test.cfy5fyxri87l.ap-northeast-2.rds.amazonaws.com',
         port=3306,
         user='admin',
-        passwd='yogizogi0000',
+        passwd='endyogizogi0',
         db='yogizogi_test',
         charset='utf8'
     )
@@ -20,11 +20,10 @@ def insert_json_data():
     db = get_db()
     mycursor = db.cursor()
         
-    json_data = open("./acc_crawling/sql/data/숙소상세정보.json").read()
+    json_data = open("./sql/data/숙소상세정보.json").read()
     json_obj = json.loads(json_data)
 
     try :   
-
         for item in json_obj:
 
             #print(item)
@@ -45,7 +44,10 @@ def insert_json_data():
             # json 데이터 넣을 떄, insert into table명(table 컬럼 순서대로) value (%s,%s,%s,%s) ★★★ 꼭 %s 후 , 콤마 찍어줘야함 ★★★ 
             # 그런 후에, 파일을 읽어오기 때문에 뒤에 괄호를 치고, 위에 for문으로 불러드린 json파일의 컬럼 값들을 가져와서 저장해주는 것임
 
-            mycursor.execute("insert into accommodation(accommodationId,category,name,score,region,ano,lat,lng,picUrl,address,detail,createdAt) value (%s, %s ,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(id, category,name,score,region,ano,lat,lng,pic_url,address,detail, now))
+            # mycursor.execute("insert into accommodation(accommodationId,category,name,rate,region,ano,lat,lon,picUrl,address,detail) value (%s, %s ,%s, %s, %s, %s, %s, %s, %s, %s, %s)",(id, category,name,score,region,ano,lat,lng,pic_url,address,detail))
+            
+            # update detail
+            mycursor.execute("update accommodation set detail = %s where accommodationId = %s", (detail, id))
             
         db.commit()
         db.close()

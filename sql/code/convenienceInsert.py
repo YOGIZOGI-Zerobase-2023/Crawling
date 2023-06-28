@@ -1,6 +1,8 @@
 import pymysql
 import json
 
+
+
 # Azure or AWS DB 연동
 def get_db():
     db = pymysql.connect(
@@ -19,26 +21,25 @@ def get_db():
     return db
      
 
-
 # json data insert
 def insert_json_data():
     
     db = get_db()
     mycursor = db.cursor()
-        
-    json_data = open("./sql/data/방사진.json").read()
+    
+    json_data = open("./sql/data/편의시설.json").read()
     json_obj = json.loads(json_data)
 
     try :
         for item in json_obj:
-            pictureId = item.get("pictureId")
-            roomId = item.get("roomId")
-            url = item.get("url")
+            convenienceId = item.get("id")
+            accommodationId = item.get("accommodationId")
+            facility = item.get("convenience")
 
             # json 데이터 넣을 떄, insert into table명(table 컬럼 순서대로) value (%s,%s,%s,%s) ★★★ 꼭 %s 후 , 콤마 찍어줘야함 ★★★ 
             # 그런 후에, 파일을 읽어오기 때문에 뒤에 괄호를 치고, 위에 for문으로 불러드린 json파일의 컬럼 값들을 가져와서 저장해주는 것임
 
-            mycursor.execute("insert into RoomPicture(pictureId,roomId,url) value (%s ,%s, %s)",(pictureId, roomId, url))
+            mycursor.execute("insert into Convenience(convenienceId, facility, accommodationId) value (%s ,%s, %s)",(convenienceId, facility, accommodationId))
             
         db.commit()
         db.close()
@@ -49,6 +50,5 @@ def insert_json_data():
         print("json 데이터 삽입 실패",e)
         db.close()
     
-
 # ----------------------------------- main --------------------------------
 insert_json_data()
